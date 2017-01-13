@@ -1,0 +1,6 @@
+set wildignore+=*/node_modules,*/build,*/out,*/target
+
+" Go to last active tab
+let g:lasttab = 1
+nmap <Leader>, :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()

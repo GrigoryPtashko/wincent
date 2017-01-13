@@ -59,3 +59,5 @@ export EC2_CERT=~/.ssh/ec2wincent_cert.pem
 export GPG_TTY=$(tty)
 
 export GOPATH=~/code/go
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home

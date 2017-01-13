@@ -22,8 +22,8 @@ alias groot='cd $(git rev-parse --show-toplevel 2> /dev/null || echo -n ".")'
 alias h=history
 alias j=jump
 alias k='rm -f ~/.ssh/glh@* && ssh sandbox rm -f .clipper.sock'
-alias l='ls -F'
-alias ll='ls -laF'
+alias ll='ls -F'
+alias l='ls -laF'
 alias m=mosh
 alias o='git oneline'
 alias p='git patch'
@@ -32,6 +32,12 @@ alias s=ssh
 alias serve='python -m SimpleHTTPServer' # optional arg: port (defaults to 8000)
 alias t=tmux
 alias v=vim
+alias cdw='cd ~/work'
+alias cd-='cd -'
+alias gw='./gradlew'
+alias svn='/opt/local/bin/svn'
+alias le='less'
+alias dush='du -sh'
 
 #
 # Suffix aliases
@@ -52,3 +58,6 @@ alias -g L="|less"
 
 # Mnemonic: "[R]eset"
 alias -g R=";clear;test -n "$TMUX" && tmux clear-history;"
+
+# Mnemonic: "[C]olor[D]iff"
+alias -g CD="|colordiff"
