@@ -13,5 +13,5 @@
     - { role: misc, tags: ['misc'] }
   vars:
     command_t_bundle: ext.bundle
-    update_vim_bundle: true
+    update_vim_bundle: false
     install_masochist_vim_dependencies: true
