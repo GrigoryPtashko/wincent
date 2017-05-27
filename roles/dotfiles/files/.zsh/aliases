@@ -2,7 +2,11 @@
 # Command aliases
 #
 
-alias ....='cd ../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 alias :e=vim
 alias :qa=exit
 alias :sp='test -n "$TMUX" && tmux split-window'
@@ -38,6 +42,10 @@ alias gw='./gradlew'
 alias svn='/opt/local/bin/svn'
 alias le='less'
 alias dush='du -sh'
+alias md='mkdir'
+alias mdp='mkdir -p'
+alias rf='rm -f'
+alias rrf='rm -rf'
 
 #
 # Suffix aliases
@@ -64,3 +72,7 @@ alias -g R=";clear;test -n "$TMUX" && tmux clear-history;"
 
 # Mnemonic: "[C]olor[D]iff"
 alias -g CD="|colordiff"
+alias -g CDL="|colordiff|less"
+
+alias -g JCL="|jsonlint|pygmentize -l json|less -R"
+alias -g JC="|jsonlint"

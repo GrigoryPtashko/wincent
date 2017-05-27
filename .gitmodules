@@ -143,3 +143,9 @@
 [submodule "roles/dotfiles/files/.vim/pack/bundle/start/editorconfig-vim"]
 	path = roles/dotfiles/files/.vim/pack/bundle/start/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule "roles/dotfiles/files/.vim/pack/bundle/start/vimproc.vim"]
+	path = roles/dotfiles/files/.vim/pack/bundle/start/vimproc.vim
+	url = https://github.com/Shougo/vimproc.vim.git
+[submodule "roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger"]
+	path = roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger
+	url = https://github.com/idanarye/vim-vebugger.git
