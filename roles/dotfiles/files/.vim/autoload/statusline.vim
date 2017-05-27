@@ -1,7 +1,7 @@
-function! statusline#gutterpadding(subtractBufferNumber) abort
-  let l:gutterWidth=max([strlen(line('$')) + 1, &numberwidth])
-  let l:bufferNumberWidth=a:subtractBufferNumber ? strlen(winbufnr(0)) : 0
-  let l:padding=repeat(' ', l:gutterWidth - l:bufferNumberWidth)
+function! statusline#gutterpadding() abort
+  let l:minwidth=2
+  let l:gutterWidth=max([strlen(line('$')) + 1, &numberwidth, l:minwidth])
+  let l:padding=repeat(' ', l:gutterWidth - 1)
   return l:padding
 endfunction
 
@@ -32,40 +32,75 @@ function! statusline#fenc() abort
 endfunction
 
 function! statusline#lhs() abort
-  let l:line=statusline#gutterpadding(1)
-  if winwidth(0) > 40
-    let l:line.=bufnr('')
-    let l:line.=' '
-  endif
+  let l:line=statusline#gutterpadding()
+  let l:line.=&modified ? '+ ' : '  '
   return l:line
 endfunction
 
 function! statusline#rhs() abort
-  let l:line=' '
+  let l:rhs=' '
   if winwidth(0) > 80
-    let l:line.='ℓ ' " (Literal, \u2113 "SCRIPT SMALL L").
-    let l:line.=line('.')
-    let l:line.='/'
-    let l:line.=line('$')
-    let l:line.=' 𝚌 ' " (Literal, \u1d68c "MATHEMATICAL MONOSPACE SMALL C").
-    let l:line.=virtcol('.')
-    let l:line.='/'
-    let l:line.=virtcol('$')
-    let l:line.=' '
+    let l:column=virtcol('.')
+    let l:width=virtcol('$')
+    let l:line=line('.')
+    let l:height=line('$')
+
+    " Add padding to stop rhs from changing too much as we move the cursor.
+    let l:padding=len(l:height) - len(l:line)
+    if (l:padding)
+      let l:rhs.=repeat(' ', l:padding)
+    endif
+
+    let l:rhs.='ℓ ' " (Literal, \u2113 "SCRIPT SMALL L").
+    let l:rhs.=l:line
+    let l:rhs.='/'
+    let l:rhs.=l:height
+    let l:rhs.=' 𝚌 ' " (Literal, \u1d68c "MATHEMATICAL MONOSPACE SMALL C").
+    let l:rhs.=l:column
+    let l:rhs.='/'
+    let l:rhs.=l:width
+    let l:rhs.=' '
+
+    " Add padding to stop rhs from changing too much as we move the cursor.
+    if len(l:column) < 2
+      let l:rhs.=' '
+    endif
+    if len(l:width) < 2
+      let l:rhs.=' '
+    endif
   endif
-  return l:line
+  return l:rhs
 endfunction
 
-let s:wincent_statusline_status_highlight='Identifier'
+let s:default_lhs_color='Identifier'
+let s:async_lhs_color='Constant'
+let s:modified_lhs_color='ModeMsg'
+let s:wincent_statusline_status_highlight=s:default_lhs_color
+let s:async=0
 
 function! statusline#async_start() abort
-  let s:wincent_statusline_status_highlight='Constant'
-  call statusline#update_highlight()
+  let s:async=1
+  call statusline#check_modified()
 endfunction
 
 function! statusline#async_finish() abort
-  let s:wincent_statusline_status_highlight='Identifier'
-  call statusline#update_highlight()
+  let s:async=0
+  call statusline#check_modified()
+endfunction
+
+function! statusline#check_modified() abort
+  if &modified && s:wincent_statusline_status_highlight != s:modified_lhs_color
+    let s:wincent_statusline_status_highlight=s:modified_lhs_color
+    call statusline#update_highlight()
+  elseif !&modified
+    if s:async && s:wincent_statusline_status_highlight != s:async_lhs_color
+      let s:wincent_statusline_status_highlight=s:async_lhs_color
+      call statusline#update_highlight()
+    elseif !s:async && s:wincent_statusline_status_highlight != s:default_lhs_color
+      let s:wincent_statusline_status_highlight=s:default_lhs_color
+      call statusline#update_highlight()
+    endif
+  endif
 endfunction
 
 function! statusline#update_highlight() abort
@@ -82,23 +117,35 @@ function! statusline#update_highlight() abort
   execute 'highlight User3 ' . l:highlight
 
   " Inverted Error styling, for left-hand side "Powerline" triangle.
-  let l:prefix=has('gui') || has('termguicolors') ? 'gui' : 'cterm'
-  let l:fg=synIDattr(synIDtrans(hlID(s:wincent_statusline_status_highlight)), 'fg', l:prefix)
-  let l:bg=synIDattr(synIDtrans(hlID('StatusLine')), 'bg', l:prefix)
-  execute 'highlight User4 ' . l:prefix . 'fg=' . l:fg . ' ' . l:prefix . 'bg=' . l:bg
+  let l:fg=pinnacle#extract_fg(s:wincent_statusline_status_highlight)
+  let l:bg=pinnacle#extract_bg('StatusLine')
+  execute 'highlight User4 ' . pinnacle#highlight({'bg': l:bg, 'fg': l:fg})
 
   " And opposite for the buffer number area.
-  execute 'highlight User7 cterm=bold gui=bold term=bold ' .
-        \ l:prefix . 'fg=' . synIDattr(synIDtrans(hlID('Normal')), 'fg', l:prefix) . ' ' .
-        \ l:prefix . 'bg=' . l:fg
+  execute 'highlight User7 ' .
+        \ pinnacle#highlight({
+        \   'bg': l:fg,
+        \   'fg': pinnacle#extract_fg('Normal'),
+        \   'term': 'bold'
+        \ })
 
   " Right-hand side section.
-  let l:bg=synIDattr(synIDtrans(hlID('User2')), 'fg', l:prefix)
-  let l:fg=synIDattr(synIDtrans(hlID('User3')), 'fg', l:prefix)
-  execute 'highlight User5 ' . l:prefix . '=bold ' . l:prefix . 'fg=' . l:bg . ' ' . l:prefix . 'bg=' . l:fg
+  let l:bg=pinnacle#extract_fg('Cursor')
+  let l:fg=pinnacle#extract_fg('User3')
+  execute 'highlight User5 ' .
+        \ pinnacle#highlight({
+        \   'bg': l:fg,
+        \   'fg': l:bg,
+        \   'term': 'bold'
+        \ })
 
   " Right-hand side section + italic (used for %).
-  execute 'highlight User6 ' . l:prefix . '=bold,italic ' . l:prefix . 'fg=' . l:bg . ' ' . l:prefix . 'bg=' . l:fg
+  execute 'highlight User6 ' .
+        \ pinnacle#highlight({
+        \   'bg': l:fg,
+        \   'fg': l:bg,
+        \   'term': 'bold,italic'
+        \ })
 
   highlight clear StatusLineNC
   highlight! link StatusLineNC User1

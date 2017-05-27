@@ -25,7 +25,11 @@ function s:CheckColorScheme()
   endif
 
   execute 'highlight Comment ' . pinnacle#italicize('Comment')
-  execute 'highlight link EndOfBuffer ColorColumn'
+
+  " Make tildes at EndOfBuffer less obvious.
+  let l:color=pinnacle#extract_bg('ColorColumn')
+  let l:highlight=pinnacle#highlight({'bg': l:color, 'fg': l:color})
+  execute 'highlight EndOfBuffer ' . l:highlight
 
   " Allow for overrides:
   " - `statusline.vim` will re-set User1, User2 etc.

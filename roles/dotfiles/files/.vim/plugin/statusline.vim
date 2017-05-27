@@ -20,13 +20,12 @@ if has('statusline')
   " Needs to be all on one line:
   "   %(                   Start item group.
   "   [                    Left bracket (literal).
-  "   %M                   Modified flag: ,+/,- (modified/unmodifiable) or nothing.
   "   %R                   Read-only flag: ,RO or nothing.
   "   %{statusline#ft()}   Filetype (not using %Y because I don't want caps).
   "   %{statusline#fenc()} File-encoding if not UTF-8.
   "   ]                    Right bracket (literal).
   "   %)                   End item group.
-  set statusline+=%([%M%R%{statusline#ft()}%{statusline#fenc()}]%)
+  set statusline+=%([%R%{statusline#ft()}%{statusline#fenc()}]%)
 
   set statusline+=%*   " Reset highlight group.
   set statusline+=%=   " Split point for left and right groups.
@@ -43,6 +42,11 @@ if has('statusline')
       autocmd ColorScheme * call statusline#update_highlight()
       autocmd User FerretAsyncStart call statusline#async_start()
       autocmd User FerretAsyncFinish call statusline#async_finish()
+      if exists('#TextChangedI')
+        autocmd BufWinEnter,BufWritePost,FileWritePost,TextChanged,TextChangedI,WinEnter * call statusline#check_modified()
+      else
+        autocmd BufWinEnter,BufWritePost,FileWritePost,WinEnter * call statusline#check_modified()
+      endif
     augroup END
   endif
 endif

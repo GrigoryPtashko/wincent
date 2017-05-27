@@ -26,6 +26,17 @@ function mosh() {
   fi
 }
 
+function mvim() {
+  emulate -L zsh
+
+  # Makes user-installed fonts visible to MacVim.
+  if which reattach-to-user-namespace &> /dev/null ; then
+    reattach-to-user-namespace mvim
+  else
+    command mvim
+  fi
+}
+
 function ssh() {
   emulate -L zsh
 
@@ -86,6 +97,32 @@ function bounce() {
   else
     print -Pn "\e]1337;RequestAttention=1\a"
   fi
+}
+
+# regmv = regex + mv (mv with regex parameter specification)
+#   example: regmv '/\.tif$/.tiff/' *
+#   replaces .tif with .tiff for all files in current dir
+#   must quote the regex otherwise "\." becomes "."
+# limitations: ? doesn't seem to work in the regex, nor *
+regmv()
+{
+  if [ $# -lt 2 ]; then
+    echo "  Usage: regmv 'regex' file(s)"
+    echo "  Where:       'regex' should be of the format '/find/replace/'"
+    echo "Example: regmv '/\.tif\$/.tiff/' *"
+    echo "   Note: Must quote/escape the regex otherwise \"\.\" becomes \".\""
+    return 1
+  fi
+  regex="$1"
+  shift
+  while [ -n "$1" ]
+  do
+    newname=$(echo "$1" | sed "s${regex}g")
+    if [ "${newname}" != "$1" ]; then
+      mv -i -v "$1" "$newname"
+    fi
+    shift
+  done
 }
 
 function email() {
@@ -151,9 +188,9 @@ function wr() {
     if [ "$COLS" -gt "$THRESHOLD" ]; then
       tmux split-window -t WriteRoom -h -p 25
       tmux split-window -t WriteRoom.1 -b -h -p 25
-      tmux select-pane -t WriteRoom.1
+      tmux select-pane -t WriteRoom.2
     fi
-    tmux send-keys -t WriteRoom.1 "vim -c CommandT" Enter
+    tmux send-keys -t WriteRoom.2 "vim -c CommandT" Enter
   fi
   if [ -z "$TMUX" ]; then
     tmux attach -t WriteRoom

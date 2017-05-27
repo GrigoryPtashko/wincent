@@ -94,10 +94,11 @@ def usage
     Usage:
       git hub get <pr>        [fetch a PR to a local branch]
       git hub link [pr]       [show web URL for PR]
+      git hub ls              [list open PRs]
       git hub merge [pr]      [merge a PR]
       git hub open [pr]       [open web URL for PR]
-      git hub ls              [list open PRs]
-      git hub show <pr>       [show a PR on standard out]
+      git hub show [pr]       [show a PR on standard out]
+      git hub update          [pull in new commits from current PR]
   END
 end
 
@@ -115,6 +116,26 @@ when 'get'
     run "git checkout -B pull/#{Shellwords.shellescape(number)}"
     run "curl -L -f -o #{dir}/PULL -s #{url}"
     run "git am #{dir}/PULL"
+  end
+
+when 'update'
+  number = current_pr
+  if number.nil?
+    die "can't infer PR number from current branch"
+  end
+  url = Shellwords.shellescape(pr(number))
+  Dir.mktmpdir do |dir|
+    run "curl -L -f -o #{dir}/PULL -s #{url}"
+    system "git am #{dir}/PULL"
+    while !$?.exitstatus.zero?
+      print 'Attempt to apply failed; run `git am --skip`? [y/n] '
+      if gets.downcase.chomp === 'y'
+        system 'git am --skip'
+      else
+        run 'git am --abort'
+        break
+      end
+    end
   end
 
 when 'link'
@@ -159,7 +180,11 @@ when 'merge'
   run "git merge --log -m #{message} --no-ff pull/#{pull}"
 
 when 'show'
-  url = Shellwords.shellescape(pr(arg))
+  number = ARGV.shift || current_pr
+  if number.nil?
+    die "no explicit PR number provided, and can't infer from current branch"
+  end
+  url = Shellwords.shellescape(pr(number))
   system "curl -L -f #{url}"
 
 else

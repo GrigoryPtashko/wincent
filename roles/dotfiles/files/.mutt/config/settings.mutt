@@ -15,7 +15,7 @@ set delete = yes # Delete without confirming.
 set edit_headers = yes
 set editor = 'vim +/^$ +nohlsearch' # Move past headers.
 set fast_reply = yes
-set folder_format = '%4C %f'
+set folder_format = '%4C %t %f'
 set forward_quote = yes
 set header_cache =~/.mutt/cache/headers
 set header_cache_compress = no
@@ -29,6 +29,7 @@ set include = yes # Include quoted copy of message in reply.
 set index_format = "%4C %Z %[%b %d %R] %-15.15L (%?l?%4l&%4c?) %s"
 
 set mail_check = 60
+set mail_check_recent = no
 set mailcap_path = "~/.mutt/config/mailcap"
 set maildir_header_cache_verify = no
 set mark_old = no
@@ -41,7 +42,7 @@ set pager_format = '=%b %C/%m: %-20.20F   %s%*—(%P)'
 
 set pager_index_lines = 12
 set pager_stop = yes # Don't move to the next message when paging past the bottom of a message.
-set query_command="reattach-to-user-namespace lbdbq %s"
+set query_command="reattach-to-user-namespace lbdbq %s 2> /dev/null"
 set realname = 'Greg Hurrell'
 set reply_to = yes # Instead of asking, always reply to Reply-to:
 set resolve = no # Don't auto-advance to the next message after every single op.

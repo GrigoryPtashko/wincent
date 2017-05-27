@@ -31,6 +31,7 @@ alias l='ls -laF'
 alias m=mosh
 alias o='git oneline'
 alias p='git patch'
+alias prettyjson='python -m json.tool'
 alias oo='git oneline -10'
 alias s=ssh
 alias serve='python -m SimpleHTTPServer' # optional arg: port (defaults to 8000)
@@ -58,11 +59,18 @@ alias -s md='open -a "Marked 2.app"'
 # (work at any position within the command line)
 #
 
+# Mnemonic: "[C]lip"
+alias -g C="|clip"
+
 # Mnemonic: "[G]rep"
 alias -g G="|grep"
 
 # Mnemonic: "[H]ead"
 alias -g H="|head"
+
+# Pretty-print JSON.
+# Mnemonic: "[J]SON"
+alias -g J="|python -m json.tool"
 
 # Mnemonic: "[L]ess"
 alias -g L="|less"

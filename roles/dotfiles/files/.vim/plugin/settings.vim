@@ -16,13 +16,6 @@ if exists('&belloff')
   set belloff=all                     " never ring the bell for any reason
 endif
 
-if has('linebreak')
-  set breakindent                     " indent wrapped lines to match start
-  if exists('&breakindentopt')
-    set breakindentopt=shift:2        " emphasize broken lines by indenting them
-  endif
-endif
-
 if exists('+colorcolumn')
   " Highlight up to 255 columns (this is the current Vim max) beyond 'textwidth'
   let &l:colorcolumn='+' . join(range(0, 254), ',+')

@@ -30,7 +30,7 @@
 	branch = wincent
 	ignore = untracked
 	path = roles/dotfiles/files/.vim/pack/nerdtree/opt/nerdtree
-	url = https://github.com/wincent/nerdtree.git
+	url = https://github.com/scrooloose/nerdtree.git
 [submodule "roles/dotfiles/files/.vim/pack/bundle/start/pinnacle"]
 	path = roles/dotfiles/files/.vim/pack/bundle/start/pinnacle
 	url = https://github.com/wincent/pinnacle.git
@@ -149,3 +149,9 @@
 [submodule "roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger"]
 	path = roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger
 	url = https://github.com/idanarye/vim-vebugger.git
+[submodule "roles/dotfiles/files/.vim/pack/bundle/start/indentLine"]
+	path = roles/dotfiles/files/.vim/pack/bundle/start/indentLine
+	url = https://github.com/Yggdroot/indentLine.git
+[submodule "roles/dotfiles/files/.vim/pack/bundle/start/vim-json"]
+	path = roles/dotfiles/files/.vim/pack/bundle/start/vim-json
+	url = https://github.com/elzr/vim-json.git
