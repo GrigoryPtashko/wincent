@@ -4,7 +4,7 @@
     - { role: dotfiles, tags: ['dotfiles'] }
     - { role: maxfiles, tags: ['maxfiles'] }
     - { role: terminfo, tags: ['terminfo'] }
-    - { role: homebrew, tags: ['homebrew'] }
+    # - { role: homebrew, tags: ['homebrew'] }
     - { role: shell, tags: ['shell'] }
     - { role: vim, tags: ['vim'] }
     - { role: defaults, tags: ['defaults'] }
@@ -13,5 +13,5 @@
     - { role: misc, tags: ['misc'] }
   vars:
     command_t_bundle: ext.bundle
-    update_vim_bundle: false
+    update_vim_bundle: true
     install_masochist_vim_dependencies: true
