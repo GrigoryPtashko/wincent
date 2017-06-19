@@ -1,0 +1,57 @@
+snippet sout "System.out.println"
+System.out.println(${1});
+endsnippet
+
+snippet ** "docblock" b
+/**
+${VISUAL:/((?m)^)/ * /g}$0
+ */
+endsnippet
+
+snippet "imp(ort)?" "import" !br
+import ${1:Class};
+endsnippet
+
+snippet "imp(ort)?s(tatic)?" "import static" !br
+import static ${1:Symbol};
+endsnippet
+
+snippet debi "debi"
+debi(methodLogPrefix, "${1}");
+endsnippet
+
+snippet debe "debe"
+debe(methodLogPrefix, "${1}");
+endsnippet
+
+snippet mlp "methodLogPrefix"
+String methodLogPrefix = "${1:Prefix}: ";
+endsnippet
+
+snippet a "Append output to StringBuilder o"
+a(o, "${1}");
+endsnippet
+
+snippet an "Append output to StringBuilder o with new line"
+an(o, "${1}");
+endsnippet
+
+snippet ane "Append output to StringBuilder o with new line if not empty"
+ane(o, "${1}");
+endsnippet
+
+snippet "psf" "public static final" !br
+public static final ${1:Class};
+endsnippet
+
+snippet "prsf" "private static final" !br
+private static final ${1:Class};
+endsnippet
+
+snippet "sbo" "StringBuilder o = new StringBuilder();" !br
+StringBuilder o = new StringBuilder();
+endsnippet
+
+snippet "exps" "ex.printStackTrace(System.out);" !br
+ex.printStackTrace(System.out);
+endsnippet
