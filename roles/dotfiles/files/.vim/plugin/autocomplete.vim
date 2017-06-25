@@ -10,9 +10,9 @@ if has('autocmd')
   augroup WincentAutocomplete
     autocmd!
     autocmd! User UltiSnipsEnterFirstSnippet
-    autocmd User UltiSnipsEnterFirstSnippet call autocomplete#setup_mappings()
+    autocmd User UltiSnipsEnterFirstSnippet call wincent#autocomplete#setup_mappings()
     autocmd! User UltiSnipsExitLastSnippet
-    autocmd User UltiSnipsExitLastSnippet call autocomplete#teardown_mappings()
+    autocmd User UltiSnipsExitLastSnippet call wincent#autocomplete#teardown_mappings()
   augroup END
 endif
 
@@ -73,4 +73,16 @@ let g:ycm_filetype_blacklist = {
       \   'infolog': 1,
       \ }
 
-call defer#packadd('YouCompleteMe', 'youcompleteme.vim')
+if has('nvim')
+  " Don't forget to run :UpdateRemotePlugins to populate
+  " `~/.local/share/nvim/rplugin.vim`.
+  packadd! deoplete
+  call wincent#defer#defer('call wincent#autocomplete#deoplete_init()')
+
+  inoremap <expr><C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+  inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+  inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-j>"
+  inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+else
+  call wincent#defer#packadd('YouCompleteMe', 'youcompleteme.vim')
+endif

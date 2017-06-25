@@ -17,8 +17,24 @@ let g:NERDTreeMouseMode=2
 if has('autocmd')
   augroup WincentNERDTree
     autocmd!
-    autocmd User NERDTreeInit call autocmds#attempt_select_last_file()
+    autocmd User NERDTreeInit call wincent#autocmds#attempt_select_last_file()
   augroup END
 endif
 
-call defer#packadd('nerdtree', 'NERD_tree.vim')
+call wincent#plugin#lazy({
+      \   'pack': 'nerdtree',
+      \   'plugin': 'NERD_tree.vim',
+      \   'commands': {
+      \     'NERDTree': '-n=? -complete=dir -bar',
+      \     'NERDTreeCWD': '-n=0 -bar',
+      \     'NERDTreeClose': '-n=0 -bar',
+      \     'NERDTreeFind': '-n=0 -bar',
+      \     'NERDTreeFocus': '-n=0 -bar',
+      \     'NERDTreeFromBookmark': '-n=1 -bar',
+      \     'NERDTreeMirror': '-n=0 -bar',
+      \     'NERDTreeToggle': '-n=? -complete=dir -bar',
+      \   },
+      \   'nnoremap': {
+      \     '<silent> -': ":silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>"
+      \   }
+      \ })

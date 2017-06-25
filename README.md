@@ -34,16 +34,18 @@ On macOS, [the `homebrew` role](https://github.com/wincent/wincent/tree/master/r
 
 ### Keyboard customization
 
-On macOS, Hammerspoon is used to provide the functionality previously provided in [the `keyboard` role](https://github.com/wincent/wincent/tree/c250a81d235bef574d3a7cf2f2bb7a585bcd9686/roles/keyboard) via [Karabiner](https://pqrs.org/osx/karabiner/):
+On macOS, [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements/) is used for the following:
 
-* Make Caps Lock serve as Backspace (when tapped), repeated Backspace (when pressed and held), and Left Control (when chorded with another key).
-* Make Return serve as Return (when tapped), repeated Return (when pressed and held), and Right Control (when chorded with another key).
-* Maps Control-I to F6 in the terminal so that it can be mapped independently from Tab in Vim.
+* Make Caps Lock serve as Backspace (when tapped) and Left Control (when chorded with another key).
+* Make Return serve as Return (when tapped) and Right Control (when chorded with another key).
+* Maps Control-I to F6 so that it can be mapped independently from Tab in Vim.
+* Toggle Caps Lock on by tapping both Shift keys simultaneously.
 
-Other functionality that *used* to come via Karabiner isn't (yet) supported because Karabiner itself doesn't support macOS Sierra, and its successor, [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements), still has a pretty primitive feature set:
+Other functionality that *used* to come via Karabiner but isn't (yet) supported by Karabiner-Elements, or I haven't gotten around to doing it:
 
+* Map Control-I only in the Terminal and in MacVim, not globally.
+* Make Caps Lock and Return fire repeating backspace and Return events when pressed and held.
 * Adds a "SpaceFN" layer that can be activated by holding down Space while hitting other keys; I use this to make the cursor keys available on or near the home row in any app.
-* Turn Caps Lock on by tapping both Shift keys simultaneously (turn it off by tapping either Shift key on its own).
 * Makes the function keys on my external Realforce keyboard behave like the "media" keys on Apple's keyboards. F13 serves as a sticky "fn" key, and F15 as Power.
 
 ### Mutt
@@ -58,7 +60,6 @@ A number of tools are used to provide command-line access to Gmail and Office IM
 * [urlview](https://packages.debian.org/sid/misc/urlview): For opening URLs from inside mutt.
 * [terminal-notifier](https://github.com/julienXX/terminal-notifier): For notifications.
 * [lbdb](https://www.spinnaker.de/lbdb/): Contact autocompletion drawing from a number of sources, such as previous messages, aliases, and macOS Contacts (which can be configured to synchronize Google contacts as well).
-* [reattach-to-user-name-space](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard): So that `lbdb` can query the macOS Contacts, and `terminal-notifier` can do its thing, even inside `tmux`.
 * [imapfilter](https://github.com/lefcha/imapfilter/): For filtering.
 * [passage](https://github.com/wincent/passage): For mediating interaction with the macOS keychain.
 
@@ -128,6 +129,11 @@ Non-Gmail extensions:
 * `b`: Toggle (mailboxes) sidebar.
 * `m`: Move message(s).
 
+Other stuff:
+
+* `<Tab>` autocompletes addresses from the lbdb database.
+* `<C-t>` autocompletes aliases.
+
 To have `mailto` links open up in `mutt` in iTerm:
 
 1. In *iTerm2* → *Preferences* → *Profiles* → *General*, create a copy of your default profile by clicking on *Other Actions...* and selecting *Duplicate Profile*.
@@ -143,7 +149,7 @@ Notes:
 ## Dependencies
 
 * [tmux](http://tmux.sourceforge.net/) 2.3 or later.
-* [Vim](http://www.vim.org/) 8.0 or later with Ruby and Python support (although there's a reasonable amount of feature detection in order to degrade gracefully).
+* [Neovim](https://neovim.io) or [Vim](http://www.vim.org/) 8.0 or later with Ruby and Python support (although there's a reasonable amount of feature detection in order to degrade gracefully).
 * Relatively recent [Zsh](http://www.zsh.org/).
 * Relatively recent [Git](http://git-scm.com/).
 * [Clipper](https://wincent.com/products/clipper) for transparent access to the local system clipboard.

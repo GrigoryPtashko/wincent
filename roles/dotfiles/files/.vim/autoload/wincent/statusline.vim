@@ -1,13 +1,15 @@
-function! statusline#gutterpadding() abort
+scriptencoding utf-8
+
+function! wincent#statusline#gutterpadding() abort
   let l:minwidth=2
   let l:gutterWidth=max([strlen(line('$')) + 1, &numberwidth, l:minwidth])
   let l:padding=repeat(' ', l:gutterWidth - 1)
   return l:padding
 endfunction
 
-function! statusline#fileprefix() abort
+function! wincent#statusline#fileprefix() abort
   let l:basename=expand('%:h')
-  if l:basename == '' || l:basename == '.'
+  if l:basename ==# '' || l:basename ==# '.'
     return ''
   else
     " Make sure we show $HOME as ~.
@@ -15,7 +17,7 @@ function! statusline#fileprefix() abort
   endif
 endfunction
 
-function! statusline#ft() abort
+function! wincent#statusline#ft() abort
   if strlen(&ft)
     return ',' . &ft
   else
@@ -23,7 +25,7 @@ function! statusline#ft() abort
   endif
 endfunction
 
-function! statusline#fenc() abort
+function! wincent#statusline#fenc() abort
   if strlen(&fenc) && &fenc !=# 'utf-8'
     return ',' . &fenc
   else
@@ -31,13 +33,14 @@ function! statusline#fenc() abort
   endif
 endfunction
 
-function! statusline#lhs() abort
-  let l:line=statusline#gutterpadding()
-  let l:line.=&modified ? '+ ' : '  '
+function! wincent#statusline#lhs() abort
+  let l:line=wincent#statusline#gutterpadding()
+  " HEAVY BALLOT X - Unicode: U+2718, UTF-8: E2 9C 98
+  let l:line.=&modified ? '✘ ' : '  '
   return l:line
 endfunction
 
-function! statusline#rhs() abort
+function! wincent#statusline#rhs() abort
   let l:rhs=' '
   if winwidth(0) > 80
     let l:column=virtcol('.')
@@ -78,32 +81,32 @@ let s:modified_lhs_color='ModeMsg'
 let s:wincent_statusline_status_highlight=s:default_lhs_color
 let s:async=0
 
-function! statusline#async_start() abort
+function! wincent#statusline#async_start() abort
   let s:async=1
-  call statusline#check_modified()
+  call wincent#statusline#check_modified()
 endfunction
 
-function! statusline#async_finish() abort
+function! wincent#statusline#async_finish() abort
   let s:async=0
-  call statusline#check_modified()
+  call wincent#statusline#check_modified()
 endfunction
 
-function! statusline#check_modified() abort
+function! wincent#statusline#check_modified() abort
   if &modified && s:wincent_statusline_status_highlight != s:modified_lhs_color
     let s:wincent_statusline_status_highlight=s:modified_lhs_color
-    call statusline#update_highlight()
+    call wincent#statusline#update_highlight()
   elseif !&modified
     if s:async && s:wincent_statusline_status_highlight != s:async_lhs_color
       let s:wincent_statusline_status_highlight=s:async_lhs_color
-      call statusline#update_highlight()
+      call wincent#statusline#update_highlight()
     elseif !s:async && s:wincent_statusline_status_highlight != s:default_lhs_color
       let s:wincent_statusline_status_highlight=s:default_lhs_color
-      call statusline#update_highlight()
+      call wincent#statusline#update_highlight()
     endif
   endif
 endfunction
 
-function! statusline#update_highlight() abort
+function! wincent#statusline#update_highlight() abort
   " Update StatusLine to use italics (used for filetype).
   let l:highlight=pinnacle#italicize('StatusLine')
   execute 'highlight User1 ' . l:highlight

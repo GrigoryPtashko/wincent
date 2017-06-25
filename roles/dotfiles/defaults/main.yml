@@ -1,15 +1,16 @@
 ---
-dotfiles:
+dotfile_files:
   - .ackrc
   - .agignore
+  - .alacritty.yml
   - .bash
   - .bash_profile
   - .clipper.json
+  - .config/karabiner
   - .config/ranger
   - .emacs.d
   - .ghci
   - .gitattributes
-  - .gitconfig
   - .gitignore
   - .gitk
   - .gvimrc
@@ -23,6 +24,7 @@ dotfiles:
   - .mutt
   - .notmuch-config
   - .npmrc
+  - .pypirc
   - .rdebugrc
   - .rspec
   - .screenrc
@@ -32,3 +34,9 @@ dotfiles:
   - .zsh
   - .zshenv
   - .zshrc
+
+dotfile_templates:
+  - .gitconfig
+
+git_user_email: '{{"greg@hurrell.net" if lookup("env", "USER") == "glh" else ""}}'
+git_user_name: '{{"Greg Hurrell" if lookup("env", "USER") == "glh" else ""}}'

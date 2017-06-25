@@ -1,11 +1,11 @@
-function! s:preview(file)
+function! s:preview(file) abort
   " TODO: remove this hack once new version of Marked 2 is out:
   " http://support.markedapp.com/discussions/questions/8670
-  silent! execute "!xattr -d com.apple.quarantine " . shellescape(a:file)
-  silent execute "!open -a 'Marked 2.app' " . shellescape(a:file)
+  silent! execute '!xattr -d com.apple.quarantine ' . shellescape(a:file)
+  silent execute '!open -a "Marked 2.app" ' . shellescape(a:file)
 endfunction
 
-function! commands#preview(...) abort
+function! wincent#commands#preview(...) abort
   if a:0 == 0
     call s:preview(expand('%'))
   else
@@ -15,7 +15,7 @@ function! commands#preview(...) abort
   endif
 endfunction
 
-function! s:open_in_diffusion(file)
+function! s:open_in_diffusion(file) abort
   let l:relative_path=''
   let l:repos=keys(g:diffusion_map)
   for l:repo in l:repos
@@ -30,8 +30,8 @@ function! s:open_in_diffusion(file)
     endif
   endfor
 
-  if l:relative_path == ''
-    call functions#echoerr('Could not find repo configuration for file ' . a:file)
+  if l:relative_path ==# ''
+    call wincent#functions#echoerr('Could not find repo configuration for file ' . a:file)
     return
   endif
 
@@ -43,7 +43,7 @@ endfunction
 " selection) in Diffusion.
 "
 " Depends on `g:diffusion_map` being set up in `plugin/private.vim`.
-function! commands#open_in_diffusion(...) abort
+function! wincent#commands#open_in_diffusion(...) abort
   if a:0 == 0
     let l:files=[expand('%')]
   else
@@ -52,14 +52,14 @@ function! commands#open_in_diffusion(...) abort
   let l:did_open=0
   for l:file in l:files
     let l:file=fnamemodify(l:file, ':p')
-    if l:file != ''
+    if l:file !=# ''
       call s:open_in_diffusion(l:file)
       let l:did_open=1
     endif
   endfor
 
   if !l:did_open
-    call functions#echoerr('No filename')
+    call wincent#functions#echoerr('No filename')
     return
   endif
 endfunction
@@ -67,7 +67,7 @@ endfunction
 " Try to open the module under the cursor in Diffusion.
 "
 " Depends on g:search_base being set up in `plugin/private.vim`.
-function! s:search(query)
+function! s:search(query) abort
   " ibgs: normal search
   " ibgl: "lucky" search, if results unambiguous
   let l:url=shellescape(
@@ -78,7 +78,7 @@ function! s:search(query)
 endfunction
 
 " Based on method of same name in: https://github.com/tpope/vim-unimpaired
-function! s:url_encode(string)
+function! s:url_encode(string) abort
   return substitute(
         \   a:string,
         \   '[^A-Za-z0-9_.~-]',
@@ -87,8 +87,8 @@ function! s:url_encode(string)
         \ )
 endfunction
 
-function! commands#search(query) abort
-  if a:query == ''
+function! wincent#commands#search(query) abort
+  if a:query ==# ''
     call s:search(expand('<cword>'))
   else
     call s:search(a:query)
