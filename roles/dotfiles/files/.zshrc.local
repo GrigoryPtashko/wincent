@@ -2,3 +2,5 @@ export GREP_OPTIONS="-n --color"
 export LIQUIBASE_HOME="/usr/local/opt/liquibase/libexec"
 export AXIS_HOME=/Users/macbook/work/bgl/axis2-1.6.2
 export AXIS_LIB=$AXIS_HOME/lib
+export git_user_name=Grigory Ptashko
+export git_user_email=grigory.ptashko@gmail.com

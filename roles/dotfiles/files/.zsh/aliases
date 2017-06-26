@@ -88,3 +88,6 @@ alias -g CDL="|colordiff|less"
 
 alias -g JCL="|jsonlint|pygmentize -l json|less -R"
 alias -g JC="|jsonlint"
+
+# Mnemonic: "[R]ip[G]rep"
+alias -g RG="|rg"
