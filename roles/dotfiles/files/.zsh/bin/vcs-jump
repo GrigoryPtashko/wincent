@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-# based on `git-jump`, that comes with Git, but works with Mercurial as well
-# (ported to Ruby to make some of the relative path manipulation easier)
+# Based on `git-jump`, that comes with Git, but works with Mercurial as well
+# (ported to Ruby to make some of the relative path manipulation easier).
 
 require 'pathname'
 require 'shellwords'
@@ -21,7 +21,7 @@ def usage()
     [supports: git, hg]
 
     grep: elements are grep hits. Arguments are given to grep.
-    [supports: git]
+    [supports: git, hg]
   EOF
 end
 
@@ -89,10 +89,6 @@ def hg?
   vcs == 'hg'
 end
 
-def require_git
-  raise 'error: not a Git repo!' unless git?
-end
-
 def shellescape(args)
   ARGV.map { |arg| Shellwords.shellescape(arg) }.join(' ')
 end
@@ -107,7 +103,7 @@ end
 
 def mode_diff(args)
   args = shellescape(args)
-  diff =  git? ? `git diff --relative #{args}` : `hg diff --git #{args}`
+  diff =  git? ? `git diff --relative #{args}` : `hg diff --git --root . #{args}`
   idx  = nil
   file = nil
 
@@ -126,7 +122,7 @@ def mode_merge(__args__ignored)
     filter = "perl -pe 's/^.*?\\t//"
   else
     command = 'hg resolve -l'
-    filter = "perl -pe 's/^U\\s+//'"
+    filter = "egrep -e '^U\\s+' | perl -pe 's#^U\\s+##{root}/#'"
   end
   puts %x{
     #{command} |
@@ -138,12 +134,15 @@ def mode_merge(__args__ignored)
   }
 end
 
-# Grep -n generates nice quickfix-looking lines by itself,
+# `grep -n` generates nice quickfix-looking lines by itself,
 # but let's clean up extra whitespace, so they look better if the
 # editor shows them to us in the status bar.
 def mode_grep(args)
-  require_git
-  puts %x{git grep -n #{shellescape args} | perl -pe 's/[ \t]+/ /g; s/^ *//;'}
+  if git?
+    puts %x{git grep -n #{shellescape args} | perl -pe 's/[ \t]+/ /g; s/^ *//;'}
+  else
+    puts %x{hg grep -n #{shellescape args} | perl -pe 's/[ \t]+/ /g; s/^ *//;'}
+  end
 end
 
 if ARGV.count < 1
