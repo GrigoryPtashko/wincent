@@ -7,6 +7,9 @@
     "profiles": [
         {
             "complex_modifications": {
+                "parameters": {
+                    "basic.to_if_alone_timeout_milliseconds": 500
+                },
                 "rules": [
                     {
                         "manipulators": [
@@ -18,11 +21,6 @@
                                         "optional": [
                                             "any"
                                         ]
-                                    }
-                                },
-                                "parameters": {
-                                    "basic": {
-                                        "to_if_alone_timeout_milliseconds": 500
                                     }
                                 },
                                 "to": [
@@ -52,11 +50,6 @@
                                         ]
                                     }
                                 },
-                                "parameters": {
-                                    "basic": {
-                                        "to_if_alone_timeout_milliseconds": 500
-                                    }
-                                },
                                 "to": [
                                     {
                                         "key_code": "right_control"
@@ -75,6 +68,16 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^org\\.vim\\.MacVim\\.plist$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
                                 "description": "Change control+I to F6",
                                 "from": {
                                     "key_code": "l",
@@ -177,6 +180,9 @@
         },
         {
             "complex_modifications": {
+                "parameters": {
+                    "basic.to_if_alone_timeout_milliseconds": 500
+                },
                 "rules": [
                     {
                         "manipulators": [
@@ -188,11 +194,6 @@
                                         "optional": [
                                             "any"
                                         ]
-                                    }
-                                },
-                                "parameters": {
-                                    "basic": {
-                                        "to_if_alone_timeout_milliseconds": 500
                                     }
                                 },
                                 "to": [
@@ -222,11 +223,6 @@
                                         ]
                                     }
                                 },
-                                "parameters": {
-                                    "basic": {
-                                        "to_if_alone_timeout_milliseconds": 500
-                                    }
-                                },
                                 "to": [
                                     {
                                         "key_code": "right_control"
@@ -245,6 +241,16 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^org\\.vim\\.MacVim\\.plist$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
                                 "description": "Change control+I to F6",
                                 "from": {
                                     "key_code": "l",
@@ -351,6 +357,12 @@
             }
         },
         {
+            "complex_modifications": {
+                "parameters": {
+                    "basic.to_if_alone_timeout_milliseconds": 1000
+                },
+                "rules": []
+            },
             "devices": [
                 {
                     "disable_built_in_keyboard_if_exists": false,

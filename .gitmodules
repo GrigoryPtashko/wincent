@@ -181,3 +181,6 @@
 [submodule "roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger"]
 	path = roles/dotfiles/files/.vim/pack/bundle/start/vim-vebugger
 	url = https://github.com/idanarye/vim-vebugger.git
+[submodule "roles/dotfiles/files/.vim/pack/bundle/start/vim-reason"]
+	path = roles/dotfiles/files/.vim/pack/bundle/start/vim-reason
+	url = https://github.com/reasonml/vim-reason.git
