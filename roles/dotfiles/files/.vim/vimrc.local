@@ -4,3 +4,4 @@ set wildignore+=*/node_modules,*/build,*/out,*/target
 let g:lasttab = 1
 nmap <Leader>, :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
+let g:indentLine_enabled = 0
