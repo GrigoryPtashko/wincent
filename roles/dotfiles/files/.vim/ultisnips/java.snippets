@@ -24,6 +24,10 @@ snippet debe "debe"
 debe(methodLogPrefix, "${1}");
 endsnippet
 
+snippet debes "debe and send error to service"
+debe(mains, ${1:userId}, methodLogPrefix, "${2}");
+endsnippet
+
 snippet mlp "methodLogPrefix"
 String methodLogPrefix = "${1:Prefix}: ";
 endsnippet
@@ -62,4 +66,58 @@ endsnippet
 
 snippet fld "Fld"
 Fld.${1}.mId
+endsnippet
+
+snippet "excsrv" "Debe and send exc to service" !br
+debe(methodLogPrefix, "${1}");
+ex.printStackTrace();
+Util.sendExceptionToService(
+	mains, connname, userId,
+	"${0:$1}", ex);
+endsnippet
+
+snippet "srcids" "getSrcObs ids" !br
+ArrayList<Long> alIds = new ArrayList<>();
+Ob0.getSrcObs(
+		mains, Ob0.metaconnname, false, ${1:flt}, 0, 0, null,
+		null, null, null, new int[]{0}, null, alIds, null, 2, true);
+for (Long ${2:id} : alIds) {
+	${3}
+}
+endsnippet
+
+snippet "flt" "createFilter" !br
+Obb flt = Ob0.createFilter(Fld.${1}.mId);
+endsnippet
+
+snippet "fltcon" "addCondition" !br
+Ob0.addCondition(flt, Fld.${1}.mId, ${2:EQ}, "${3:}");
+endsnippet
+
+snippet "getmodel" "getModel" !br
+getModel(
+	mains, ${1:s2L(ob.id)}, ${2}.class, mc, qc,
+	Lng.valueOf(lngParam.lngCode.toUpperCase()),
+	new BGObject.BGObjectFactory() {
+			@Override
+			public BGObject newBGObject(Lng lng) {
+				return new ${3:$2}(lng);
+			}
+	});
+${4}
+endsnippet
+
+snippet s "String.valueOf"
+String.valueOf(${1})
+endsnippet
+
+snippet "try" "try / catch" !br
+try {
+	${1}
+} catch (Exception ex) {
+}
+endsnippet
+
+snippet "ne" "nullOrEmpty" !br
+nullOrEmpty(${1})
 endsnippet

@@ -4,3 +4,7 @@
 .DS_Store
 \#*\#
 schema.json
+ios/
+android/
+.expo-source/
+tmp/

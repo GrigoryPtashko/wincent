@@ -1,6 +1,23 @@
 export GREP_OPTIONS="-n --color"
 export LIQUIBASE_HOME="/usr/local/opt/liquibase/libexec"
-export AXIS_HOME=/Users/macbook/work/bgl/axis2-1.6.2
+export AXIS_HOME=/Users/macbook/work/bgl/axis2-1.7.6
 export AXIS_LIB=$AXIS_HOME/lib
 export git_user_name=Grigory Ptashko
 export git_user_email=grigory.ptashko@gmail.com
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+
+function erlang-watchman {
+  # Register the command you want to run when changes are detected here
+  run="clear && printf '\e[3J' && rebar3 eunit"
+
+  # Retrieve the custom argments. If none are provided, default to ""
+  [[ -n $@ ]] && args=$@ || args=""
+
+  # Run the command first...
+  eval "$run $args"
+  # ...then start watching for changes—and run on change
+  watchman-make \
+    -p '**/*.erl' \
+    --make=$run \
+    -t "$args"
+}
