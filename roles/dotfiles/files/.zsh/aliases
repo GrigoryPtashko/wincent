@@ -91,3 +91,5 @@ alias -g JC="|jsonlint"
 
 # Mnemonic: "[R]ip[G]rep"
 alias -g RG="|rg"
+
+alias gmake="/usr/local/bin/make"

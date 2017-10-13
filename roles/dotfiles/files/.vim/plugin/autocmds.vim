@@ -11,9 +11,19 @@ if has('autocmd')
     " Disable paste mode on leaving insert mode.
     autocmd InsertLeave * set nopaste
 
+    if has('nvim')
+      " Sync with corresponding non-nvim settings in ~/.vim/plugin/settings.vim:
+      autocmd ColorScheme * highlight! link NonText ColorColumn
+      autocmd ColorScheme * highlight! link CursorLineNr DiffText
+      autocmd ColorScheme * highlight! link VertSplit LineNr
+    endif
+
     " Make current window more obvious by turning off/adjusting some features in non-current
     " windows.
-    if exists('+colorcolumn')
+    if exists('+winhighlight')
+      autocmd BufEnter,FocusGained,VimEnter,WinEnter * if wincent#autocmds#should_colorcolumn() | set winhighlight= | endif
+      autocmd FocusLost,WinLeave * if wincent#autocmds#should_colorcolumn() | set winhighlight=CursorLineNr:LineNr,IncSearch:ColorColumn,Normal:ColorColumn,NormalNC:ColorColumn,SignColumn:ColorColumn | endif
+    elseif exists('+colorcolumn')
       autocmd BufEnter,FocusGained,VimEnter,WinEnter * if wincent#autocmds#should_colorcolumn() | let &l:colorcolumn='+' . join(range(0, 254), ',+') | endif
       autocmd FocusLost,WinLeave * if wincent#autocmds#should_colorcolumn() | let &l:colorcolumn=join(range(1, 255), ',') | endif
     endif
@@ -25,10 +35,8 @@ if has('autocmd')
       autocmd BufEnter,FocusGained,VimEnter,WinEnter * call wincent#autocmds#focus_statusline()
       autocmd FocusLost,WinLeave * call wincent#autocmds#blur_statusline()
     endif
-    if exists('*matchaddpos')
-      autocmd BufEnter,FocusGained,VimEnter,WinEnter * call wincent#autocmds#focus_window()
-      autocmd FocusLost,WinLeave * call wincent#autocmds#blur_window()
-    endif
+    autocmd BufEnter,FocusGained,VimEnter,WinEnter * call wincent#autocmds#focus_window()
+    autocmd FocusLost,WinLeave * call wincent#autocmds#blur_window()
 
     if has('mksession')
       " Save/restore folds and cursor position.

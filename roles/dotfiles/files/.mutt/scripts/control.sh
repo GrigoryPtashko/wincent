@@ -28,6 +28,17 @@ function signal() {
   fi
 }
 
+function term() {
+  PIDFILE=$1
+  signal "-TERM" "$PIDFILE"
+}
+
+# Named `kill9` to avoid collision with `kill` utility.
+function kill9() {
+  PIDFILE=$1
+  signal "-KILL" "$PIDFILE"
+}
+
 function pause() {
   PIDFILE=$1
   signal "-STOP" "$PIDFILE"
@@ -38,6 +49,8 @@ function resume() {
   signal "-CONT" "$PIDFILE"
 }
 
+set -f # Avoid wildcard expansion.
+
 COMMAND=help
 while true; do
   case $COMMAND in
@@ -46,32 +59,81 @@ while true; do
       ;;
     help|hel|he|h|\?)
       echo "Commands:"
-      echo "  exit   - exit this control loop"
-      echo "  help   - show this help"
-      echo "  pause  - pause email sync"
-      echo "  resume - resume email sync"
-      echo "  sync   - force an immediate email sync"
+      echo "  exit               - exit this control loop"
+      echo "  help               - show this help"
+      echo "  kill [home|work]   - kill (-9) email sync"
+      echo "  pause [home|work]  - pause email sync"
+      echo "  resume [home|work] - resume email sync"
+      echo "  sync [home|work]   - force an immediate email sync"
+      echo "  term [home|work]   - terminate (TERM) email sync"
       ;;
     pause|paus|pau|pa|p)
       echo "Pausing:"
-      pause "$HOME/.mutt/tmp/sync-home.pid"
-      pause "$HOME/.mutt/tmp/sync-work.pid"
+      if [ -n "$TARGET" ]; then
+        pause "$HOME/.mutt/tmp/sync-${TARGET}.pid"
+      else
+        pause "$HOME/.mutt/tmp/sync-home.pid"
+        pause "$HOME/.mutt/tmp/sync-work.pid"
+      fi
       ;;
     resume|resum|resu|res|re|r)
       echo "Resuming:"
-      resume "$HOME/.mutt/tmp/sync-home.pid"
-      resume "$HOME/.mutt/tmp/sync-work.pid"
+      if [ -n "$TARGET" ]; then
+        resume "$HOME/.mutt/tmp/sync-${TARGET}.pid"
+      else
+        resume "$HOME/.mutt/tmp/sync-home.pid"
+        resume "$HOME/.mutt/tmp/sync-work.pid"
+      fi
       ;;
     sync|syn|sy|s)
       echo "Syncing:"
-      "$HOME/.mutt/scripts/download.sh" home
-      "$HOME/.mutt/scripts/download.sh" work
+      if [ -n "$TARGET" ]; then
+        "$HOME/.mutt/scripts/download.sh" $TARGET
+      else
+        "$HOME/.mutt/scripts/download.sh" home
+        "$HOME/.mutt/scripts/download.sh" work
+      fi
+      ;;
+    term|ter|te|t)
+      echo "Terminating:"
+      if [ -n "$TARGET" ]; then
+        term "$HOME/.mutt/tmp/sync-${TARGET}.pid"
+      else
+        term "$HOME/.mutt/tmp/sync-home.pid"
+        term "$HOME/.mutt/tmp/sync-work.pid"
+      fi
+      ;;
+    kill|kil|ki|k)
+      echo "Killing:"
+      if [ -n "$TARGET" ]; then
+        kill9 "$HOME/.mutt/tmp/sync-${TARGET}.pid"
+      else
+        kill9 "$HOME/.mutt/tmp/sync-home.pid"
+        kill9 "$HOME/.mutt/tmp/sync-work.pid"
+      fi
       ;;
     *)
       echo "Invalid command: $COMMAND"
-      echo "Valid commands: exit, help, pause, resume, sync"
+      echo "Valid commands: exit, help, pause, resume, sync, term"
       ;;
   esac
-  /bin/echo -n "> "
-  read COMMAND
+  while true; do
+    /bin/echo -n "> "
+    read -a INPUT
+    if [ ${#INPUT[@]} -gt 2 ]; then
+      echo "Invalid input: ${INPUT[@]}"
+      echo "See \"help\" for usage information"
+      continue
+    fi
+    COMMAND=${INPUT[0]}
+    TARGET=${INPUT[1]}
+    if [ -n "$TARGET" ]; then
+      if [ "$TARGET" != "home" -a "$TARGET" != "work" ]; then
+        echo "Invalid target: $TARGET"
+        echo "Valid targets: home, work"
+        continue
+      fi
+    fi
+    break
+  done
 done

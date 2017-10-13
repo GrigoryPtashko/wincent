@@ -169,7 +169,7 @@ select-word-style bash # only alphanumeric chars are considered WORDCHARS
 
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey '^x^e' edit-command-line
+bindkey '^x^x' edit-command-line
 
 bindkey ' ' magic-space # do history expansion on space
 
@@ -318,7 +318,7 @@ test -f $LOCAL_RC && source $LOCAL_RC
 #
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=0'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 
 # Uncomment this to get syntax highlighting:
 # source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
