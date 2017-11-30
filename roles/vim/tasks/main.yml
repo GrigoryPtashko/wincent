@@ -4,11 +4,10 @@
 
 - import_tasks: build.yml
 
-- import_tasks: local.yml
-  when: use_local_vim_dir
-
 - import_tasks: masochist.yml
   when: install_masochist_vim_dependencies
 
 - import_tasks: nvim.yml
-  when: install_nvim_dependencies
+
+- import_tasks: deoplete.yml
+  when: install_deoplete_extensions

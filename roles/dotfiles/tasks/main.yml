@@ -34,8 +34,13 @@
         force=yes
   with_items: '{{dotfile_files}}'
 
+# Note some nasty dependencies here between creating the symlinks (eg.
+# effectively creating ~/mutt/config/) and then templating into it (eg.
+# ~/.mutt/config/settings.mutt).
 - name: dotfiles | create templates
-  template: src={{ item }} dest={{ ansible_env.HOME }}/{{ item }}
+  template: dest={{ ansible_env.HOME }}/{{ item }}
+            mode={{ '0755' if item.endswith('.sh') else '0644' }}
+            src={{ item }}
   with_items: '{{dotfile_templates}}'
 
 # Provide an extension point for other roles to dump .zshenv stuff into.
@@ -47,7 +52,5 @@
 - name: dotfiles | create auxiliary directories
   file: path={{ item }} state=directory
   with_items:
-    # mbsync will die on first sync without these.
+    # mbsync will die on first sync without this:
     - ~/.mail
-    - ~/.mail/Home
-    - ~/.mail/Work

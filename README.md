@@ -64,21 +64,9 @@ A number of tools are used to provide command-line access to Gmail and Office IM
 
 In order for all this to work, a few items have to be stored in the macOS keychain:
 
-* Four "generic" (A.K.A. "application") keychain items (that is, without protocols, only hostnames):
-  * For sending mail:
-    * An item with (for Gmail):
-      * "Keychain Item Name": smtp.gmail.com (corresponds to the "host" field in `~/.msmtprc`).
-      * "Account Name": username+mutt@example.net (corresponds to the "user" field in `~/.msmtprc`).
-    * An item with (for Office):
-      * "Keychain Item Name": smtp.office365.com (corresponds to the "host" field in `~/.msmtprc`).
-      * "Account Name": username+mutt@example.com (corresponds to the "user" field in `~/.msmtprc`).
-  * For receiving mail:
-    * An item with (for Gmail):
-      * "Keychain Item Name": imap.gmail.com (corresponds to the "Host" field in `~/.mbsyncrc`).
-      * "Account Name": username+mutt@example.net (corresponds to the "PassCmd" field in `~/.mbsyncrc`).
-    * An item with (for Office):
-      * "Keychain Item Name": outlook.office365.com
-      * "Account Name": username+mutt@example.com
+* A "generic" (A.K.A. "application") keychain items (that is, without protocols, only hostnames):
+  * "Keychain Item Name": example.net (corresponds to the "host" field in `~/.msmtprc`, and "Host" field in `~/.mbsyncrc`).
+  * "Account Name": username+mutt@example.net (corresponds to the "user" field in `~/.msmtprc`, and "PassCmd" field in `~/.mbsynrc`).
 
 The following Gmail-like/Vim-like bindings are configured:
 
@@ -107,8 +95,6 @@ Standard `mutt` stuff:
 
 Non-Gmail extensions:
 
-* `gh`: Go to home account (mnemonic: "[g]o [h]ome!").
-* `gw`: Go to work account (mnemonic: "[g]et to [w]ork!".
 * `t`: Toggle selection on entire thread (see also `x`).
 * `A` show alternate MIME-type in MIME-multipart messages.
 * `S`: Search all using [Xapian query syntax](https://xapian.org/docs/queryparser.html):
@@ -155,7 +141,6 @@ Notes:
 * On macOS, [iTerm2](http://www.iterm2.com/). Additionally, only the latest version of macOS (currently Sierra) gets actively tested.
 * [Python](https://www.python.org/) to perform setup via the included `install` command.
 * [Ruby](https://www.ruby-lang.org/).
-* [CMake](https://cmake.org/) is required for YouCompleteMe.
 * [Adobe Source Code Pro](https://github.com/adobe-fonts/source-code-pro) or any other fixed-width font that includes the [Powerline glyphs](http://powerline.readthedocs.io/en/master/installation.html#fonts-installation).
 
 ## Installation
@@ -171,6 +156,12 @@ Note that if you're behind a firewall you may need to set up a temporary `~/.git
 ```
 [http]
 	proxy = fwdproxy:8080
+```
+
+Or alternatively:
+
+```sh
+env http_proxy=http://fwdproxy:8080 https_proxy=http://fwdproxy:8080 git clone --recursive https://github.com/wincent/wincent
 ```
 
 ### Install
