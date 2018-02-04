@@ -36,16 +36,17 @@ On macOS, [the `homebrew` role](https://github.com/wincent/wincent/tree/master/r
 
 On macOS, [Karabiner-Elements](https://github.com/tekezo/Karabiner-Elements/) is used for the following:
 
-* Make Caps Lock serve as Backspace (when tapped) and Left Control (when chorded with another key).
-* Make Return serve as Return (when tapped) and Right Control (when chorded with another key).
+* Make Caps Lock serve as Backspace (when tapped) and Left Control (when chorded with another key). When held down alone, Caps Lock fires repeated Backspace events.
+* Make Return serve as Return (when tapped) and Right Control (when chorded with another key). When held down alone, Return fires repeated Return events.
 * Maps Control-I to F6 (only in MacVim and the terminal) so that it can be mapped independently from Tab in Vim.
 * Toggle Caps Lock on by tapping both Shift keys simultaneously.
+* Makes the function keys on my external Realforce keyboard behave like the "media" keys on Apple's keyboards.
+* Swap Option and Command keys on my external Realforce keyboard.
+* Adds a "SpaceFN" layer that can be activated by holding down Space while hitting other keys; I use this to make the cursor keys available on or near the home row in any app.
 
 Other functionality that *used* to come via Karabiner but isn't (yet) supported by Karabiner-Elements, or I haven't gotten around to doing it:
 
-* Make Caps Lock and Return fire repeating backspace and Return events when pressed and held.
-* Adds a "SpaceFN" layer that can be activated by holding down Space while hitting other keys; I use this to make the cursor keys available on or near the home row in any app.
-* Makes the function keys on my external Realforce keyboard behave like the "media" keys on Apple's keyboards. F13 serves as a sticky "fn" key, and F15 as Power.
+* On my external Realforce keyboard F13 serves as a sticky "fn" key, and F15 as Power.
 
 ### Mutt
 
@@ -121,10 +122,8 @@ Other stuff:
 
 To have `mailto` links open up in `mutt` in iTerm:
 
-1. In *iTerm2* → *Preferences* → *Profiles* → *General*, create a copy of your default profile by clicking on *Other Actions...* and selecting *Duplicate Profile*.
-2. Name the copy something identifying, like "Mutt".
-3. Under *Command*, select the *Command* radio button and enter `/usr/bin/env MAILTO=$$URL$$ /usr/local/bin/zsh -ic "/usr/local/bin/mutt -- $MAILTO"`:
-4. Under *URL Schemes* → *Schemes handled:*, select `mailto`.
+1. In *iTerm2* → *Preferences* → *Profiles* → *General*, select the "Mutt" profile.
+2. Under *URL Schemes* → *Schemes handled:*, select `mailto`.
 
 Notes:
 
@@ -167,11 +166,18 @@ env http_proxy=http://fwdproxy:8080 https_proxy=http://fwdproxy:8080 git clone -
 ### Install
 
 ```sh
-./install        # installs everything on the local machine
-./install --help # info on installing specific roles, force-installing etc
+./install          # Installs everything on the local machine.
+./install --help   # Info on installing specific roles, force-installing etc.
+./install dotfiles # Just install dotfiles.
 ```
 
 This sets up a local Python environment using the bundled virtualenv, bootstraps Ansible, and then uses Ansible to copy the dotfiles and configure the machine.
+
+Again, if you're behind a firewall, you may need to make use of a proxy during the initial run:
+
+```sh
+env http_proxy=http://fwdproxy:8080 https_proxy=http://fwdproxy:8080 ./install
+```
 
 As a fallback strategy, in case the `install` script fails, you can symlink the dotfiles by hand with a command like the following:
 
@@ -233,6 +239,10 @@ To persist this `LC_*` variable binding, edit your `locale` accordingly:
 LANG=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 ```
+
+### See also
+
+- [High-level overview of how this repo works (screencast)](https://youtu.be/__0Dquj7y9g).
 
 ### License
 
